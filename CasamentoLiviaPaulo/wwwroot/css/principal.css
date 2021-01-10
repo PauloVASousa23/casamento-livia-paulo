@@ -1,0 +1,241 @@
+﻿@font-face{
+    font-family: 'Dosis';
+    src: url("../font/Dosis-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family: 'OrangeBlossom';
+    src: url("../font/Orange Blossom.ttf");
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: Dosis;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #F3F0F8;
+}
+
+.topo {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+}
+
+.img-topo-titulo {
+    width: 400px;
+    left: 0px;
+    position: absolute;
+    top: 0px;
+}
+
+.img-topo-bg-1 {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 110vh;
+}
+
+.img-topo-bg-2 {
+    position: absolute;
+    left: 0px;
+    bottom: -0px;
+    width: 500px;
+}
+
+nav{
+    position: relative;
+}
+
+.coracao-branco{
+    width: 10px;
+}
+
+.menu-botoes {
+    position: absolute;
+    right: 30px;
+    top: 10px;
+}
+
+    .menu-botoes > button {
+        background-color: transparent;
+        border: none;
+        font-size: 20px;
+        color: #16182F;
+        font-weight: bold;
+        margin: 0px 30px;
+        outline: none !important;
+    }
+
+.img-casal-coracoes{
+    width: 80%;
+}
+
+.topo::before {
+    content: '';
+    width: 50vw;
+    height: 60px;
+    transform: rotate(-5deg);
+    background-color: #F3F0F8;
+    position: absolute;
+    bottom: -30px;
+    right: 0px;
+    z-index: 1;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+.topo::after {
+    content: '';
+    width: 50vw;
+    height: 60px;
+    transform: rotate(5deg);
+    background-color: #F3F0F8;
+    position: absolute;
+    bottom: -30px;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+.img-coracao-azul {
+    height: 30px;
+    margin: 0px 20px;
+}
+
+.sobre {
+    padding: 30px 0px;
+}
+
+.img-noiva {
+    width: 60%;
+}
+
+.foto {
+    width: 300px;
+    height: 300px;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.foto-img {
+    width: 280px;
+    height: 240px;
+    background-color: #B64667;
+}
+
+.foto-footer {
+    text-align: right;
+    padding-top: 10px;
+}
+
+    .foto-footer > img {
+        height: 10px;
+        width: 10px !important;
+        display: inline-block !important;
+    }
+
+.spinner-fotos{
+    position: relative;
+}
+
+img.seta-voltar-foto {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    z-index: 9999;
+    top: 37%;
+    left: 50px;
+    cursor: pointer;
+}
+
+img.seta-passar-foto {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    z-index: 9999;
+    top: 37%;
+    right: 50px;
+    transform: rotate(180deg);
+    cursor: pointer;
+}
+
+.presentes {
+    background-image: url("../img/vetor-bg-presentes.png");
+    background-size: cover;
+    padding-top: 110px;
+    margin-top: 80px;
+}
+
+.img-presentes {
+    width: 70%;
+}
+
+.contato {
+    background-color: #202148;
+    padding: 30px;
+}
+
+/*******************/
+.text-rosa {
+    color: #B64667;
+}
+
+.text-azul {
+    color: #16182F;
+}
+
+.btn-rounded {
+    border: none;
+    padding: 5px 20px;
+    border-radius: 100px;
+    outline: none;
+}
+
+.btn-azul {
+    background-color: #16182F;
+    color: #fff;
+}
+
+.btn-rosa {
+    background-color: #B64667;
+    color: #fff;
+}
+
+.text-blossom{
+    font-family: OrangeBlossom;
+}
+
+.hr-azul {
+    background-color: #202148;
+    height: 5px;
+    width: 20vw;
+    margin: 20px auto;
+    border-radius: 100px;
+}
+
+.hr-rosa {
+    background-color: #B64667;
+    height: 5px;
+    width: 20vw;
+    margin: 20px auto;
+    border-radius: 100px;
+}
+
+.hr-branco {
+    background-color: #fff;
+    height: 5px;
+    width: 20vw;
+    margin: 20px auto;
+    border-radius: 100px;
+}
+
+.column-full-center {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}

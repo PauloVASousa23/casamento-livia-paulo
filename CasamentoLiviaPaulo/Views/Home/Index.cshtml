@@ -1,7 +1,163 @@
 ﻿@{
     ViewData["Title"] = "Página inicial";
+    Layout = "../Shared/_LayoutLimpo.cshtml";
 }
 
-<div class="text-center" style="height: 70vh; display: flex; justify-content: center; align-items: center;">
-    <h1 class="display-4">Em breve</h1>
+<div class="topo">
+    <img src="~/img/vetor-topo-titulo.png" class="img-topo-titulo" />
+    <img src="~/img/vetor-topo-bg-1.png" class="img-topo-bg-1" />
+    <img src="~/img/vetor-topo-bg-2.png" class="img-topo-bg-2" />
+    <nav>
+        <div class="ml-5 mt-3 d-inline-block">
+            <h2>
+                <span class="text-rosa">Livia <img src="~/img/icone-coração-branco.png" class="coracao-branco" /> Paulo</span>
+            </h2>
+        </div>
+
+        <div class="ml-5 mt-3 menu-botoes">
+            <button>Inicio</button>
+            <button>Sobre</button>
+            <button>Fotos</button>
+            <button>Presentes</button>
+            <button>Contato</button>
+        </div>
+    </nav>
+    <section class="row align-items-center" style="height: calc(100vh - 65px);">
+        <div class="col-6 pl-5">
+            <span class="text-rosa font-weight-bold" style="font-size: 50px;">Vamos nos</span></br>
+            <span class="text-rosa font-weight-bold" style="font-size: 78px;line-height: 30px;">CASAR!</span></br>
+            </br>
+            <span class="text-azul font-weight-bold" style="font-size: 25px;">Pre-wedding</span></br>
+            <span class="text-azul font-weight-bold">Veja nossas fotos do pre-wedding</span></br>
+
+            <button class="btn-rounded btn-azul mt-2">Veja aqui</button>
+
+        </div>
+        <div class="col-6">
+            <img src="~/img/vetor-casal-coracoes.png" class="img-casal-coracoes" />
+        </div>
+    </section>
 </div>
+
+<section class="sobre">
+    <h1 class="text-blossom text-rosa text-center mt-2" style="font-size: 60px;">
+        Livia <img src="~/img/icone-coração-azul.png" class="img-coracao-azul" /> Paulo
+    </h1>
+    <div class="row">
+        <div class="col-3 d-flex justify-content-center">
+            <img src="~/img/vetor-noiva-1.png" class="img-noiva" />
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <div class="col-8 text-center mt-3 text-azul font-weight-bold d-flex align-items-center">
+                <p>
+                    Após 5 anos de relacionamento, enfim vamos nos casar,
+                    ksjdafhaksjdfh jfdkhasdfjhfhdjf hsdfhdsfd fsdf dfhdsfh
+                    sdfjhsdf hsdf jsdhf sjdf hsjdfh sjdf hsdfjh.
+
+                    asdasdas das dasd adwqe qweqwhas dkajhsd adhasd
+                    asdasdasd qweqw asdasdadasdas da
+                    asda asdasd asdasd .
+                </p>
+            </div>
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+            <img src="~/img/vetor-noivo-1.png" class="img-noiva" />
+        </div>
+    </div>
+</section>
+<section class="fotos">
+    <hr class="hr-azul" />
+    <h1 class="text-center text-rosa mb-3" style="font-size: 60px;">
+        Fotos
+    </h1>
+    <div class="spinner-fotos">
+        <img src="~/img/vetor-seta.png" class="seta-voltar-foto" />
+        <div class="owl-carousel">
+            <div class="foto">
+                <div class="foto-img">
+
+                </div>
+                <div class="foto-footer">
+                    <img src="~/img/icone-coração-azul.png" /> 10/01/20
+                </div>
+            </div>
+
+            <div class="foto">
+                <div class="foto-img">
+
+                </div>
+                <div class="foto-footer">
+                    <img src="~/img/icone-coração-azul.png" /> 10/01/20
+                </div>
+            </div>
+
+            <div class="foto">
+                <div class="foto-img">
+
+                </div>
+                <div class="foto-footer">
+                    <img src="~/img/icone-coração-azul.png" /> 10/01/20
+                </div>
+            </div>
+        </div>
+        <img src="~/img/vetor-seta.png" class="seta-passar-foto" />
+    </div>
+</section>
+<section class="presentes">
+    <hr class="hr-rosa" />
+    <h1 class="text-center text-rosa mb-5" style="font-size: 60px;">
+        Presentes
+    </h1>
+    <div class="row">
+        <div class="col-6 d-flex justify-content-center">
+            <img src="~/img/vetor-presentes.png" class="img-presentes" />
+        </div>
+        <div class="col-4 text-center text-white column-full-center">
+            <p>
+                Após 5 anos de relacionamento, enfim vamos nos casar,
+                ksjdafhaksjdfh jfdkhasdfjhfhdjf hsdfhdsfd fsdf dfhdsfh
+                sdfjhsdf hsdf jsdhf sjdf hsjdfh sjdf hsdfjh.
+
+                asdasdas das dasd adwqe qweqwhas dkajhsd adhasd
+                asdasdasd qweqw asdasdadasdas da
+                asda asdasd asdasd .
+            </p>
+            <button class="btn-rounded btn-rosa mt-2">ACESSAR</button>
+        </div>
+    </div>
+</section>
+<section class="contato">
+    <hr class="hr-branco" />
+</section>
+
+<script>
+    $(document).ready(function () {
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            margin: 10,
+            nav: true,
+            loop: true,
+            center: true,
+            autoWidth: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        })
+    })
+
+    $(".seta-passar-foto").on("click", function () {
+        $('.owl-carousel').trigger('next.owl.carousel');
+    });
+
+    $(".seta-voltar-foto").on("click", function () {
+        $('.owl-carousel').trigger('prev.owl.carousel');
+    });
+</script>
