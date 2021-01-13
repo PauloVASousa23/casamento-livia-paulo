@@ -8,6 +8,11 @@
     src: url("../font/Orange Blossom.ttf");
 }
 
+@font-face {
+    font-family: 'Bobbi Jeffina';
+    src: url("../font/Bobbi Jeffina.ttf");
+}
+
 *{
     margin: 0px;
     padding: 0px;
@@ -73,8 +78,16 @@ nav{
         outline: none !important;
     }
 
-.img-casal-coracoes{
+.btn-hamburguer, .btn-fechar-menu {
+    display: none;
+}
+
+.img-casal-coracoes {
     width: 80%;
+}
+
+.topo-conteudo {
+    height: calc(100vh - 65px);
 }
 
 .topo::before {
@@ -87,7 +100,7 @@ nav{
     bottom: -30px;
     right: 0px;
     z-index: 1;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+    filter: drop-shadow(12px 4px 6px rgba(0,0,0,0.2));
 }
 
 .topo::after {
@@ -147,8 +160,6 @@ img.seta-voltar-foto {
     width: 50px;
     height: 50px;
     z-index: 9999;
-    top: 37%;
-    left: 50px;
     cursor: pointer;
 }
 
@@ -157,8 +168,8 @@ img.seta-passar-foto {
     width: 50px;
     height: 50px;
     z-index: 9999;
-    top: 37%;
-    right: 50px;
+    top: 0px;
+    right: 10px;
     transform: rotate(180deg);
     cursor: pointer;
 }
@@ -177,6 +188,7 @@ img.seta-passar-foto {
 .contato {
     background-color: #202148;
     padding: 30px;
+    margin-top: -7px;
 }
 
 /*******************/
@@ -209,6 +221,10 @@ img.seta-passar-foto {
     font-family: OrangeBlossom;
 }
 
+.text-bobbi {
+    font-family: 'Bobbi Jeffina';
+}
+
 .hr-azul {
     background-color: #202148;
     height: 5px;
@@ -238,4 +254,124 @@ img.seta-passar-foto {
     align-items: center;
     display: flex;
     flex-direction: column;
+}
+
+.font-50 {
+    font-size: 50px;
+}
+
+.font-78 {
+    font-size: 78px;
+    line-height: 30px;
+}
+
+@media (max-width: 768px){
+    .img-topo-titulo {
+        width: 250px;
+        left: 0px;
+        position: absolute;
+        top: 0px;
+    }
+
+    .img-topo-bg-1 {
+        position: absolute;
+        top: 0px;
+        right: -200px;
+        height: 120vh;
+    }
+
+    .img-topo-bg-2 {
+        position: absolute;
+        left: 0px;
+        bottom: -0px;
+        width: 300px;
+    }
+
+    .topo-conteudo {
+        height: calc(70vh);
+        margin-top: 80px !important;
+    }
+
+    .font-50 {
+        font-size: 30px;
+    }
+
+    .font-78 {
+        font-size: 44px;
+        line-height: 30px;
+    }
+
+    .img-noiva {
+        width: 90px;
+        height: 150px;
+    }
+
+    .seta-passar-foto {
+        top: 43%;
+    }
+
+    .menu-botoes {
+        display: none;
+        position: fixed;
+        right: 0px;
+        height: 100vh;
+        width: 100vw;
+        top: 0px;
+        margin-top: 0px !important;
+        background-color: #ffd0de;
+        z-index: 99999;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+        .menu-botoes > button {
+            background-color: transparent;
+            border: none;
+            font-size: 25px;
+            color: #16182F;
+            font-weight: bold;
+            margin: 0px 30px;
+            outline: none !important;
+        }
+
+    .btn-fechar-menu {
+        display: block;
+        position: absolute;
+        top: 30px;
+        right: 0px;
+    }
+
+    .btn-hamburguer {
+        display: block;
+        background-color: #16182F;
+        padding: 8px;
+        border-radius: 5px;
+        border: none;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .hamburguer {
+        height: 5px;
+        width: 40px;
+        background-color: #b64667;
+        display: block;
+        border-radius: 100px;
+        margin-top: 5px;
+    }
+
+    .btn-fechar-menu > .hamburguer {
+        background-color: #202148;
+    }
+
+    .btn-fechar-menu > .hamburguer:nth-child(1){
+        transform: rotate(45deg);
+    }
+
+        .btn-fechar-menu > .hamburguer:nth-child(2) {
+            transform: rotate(-45deg);
+            margin-top: -5px;
+        }
+
 }
