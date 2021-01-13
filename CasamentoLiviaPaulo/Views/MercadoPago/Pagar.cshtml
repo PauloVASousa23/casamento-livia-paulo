@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Página inicial";
+    Layout = "../Shared/_LayoutLimpo.cshtml";
+}
+
+
+<section class="sobre">
+    <span class="font-78">Pagou!</span>
+    <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+            data-preference-id="@ViewData["preferences"]">
+    </script>
+</section>

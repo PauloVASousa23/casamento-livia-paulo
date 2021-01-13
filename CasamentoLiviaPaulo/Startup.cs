@@ -29,6 +29,7 @@ namespace CasamentoLiviaPaulo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            MercadoPago.SDK.AccessToken = "TEST-4009994650089143-011318-5321cc2d4e5483554f03ca91b03d68a0-191500391";
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
