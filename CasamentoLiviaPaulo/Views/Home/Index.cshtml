@@ -12,3 +12,9 @@
         <img src="~/img/vetor-casal-coracoes.png" class="img-casal-coracoes mt-5 mx-auto" />
     </div>
 </section>
+
+@foreach (Teste item in ViewData["teste"] as List<Teste>)
+{
+    <span>@item.Usuario</span>
+}
+

@@ -20,6 +20,9 @@ namespace CasamentoLiviaPaulo.Controllers
 
         public IActionResult Index()
         {
+
+            TesteContext teste = HttpContext.RequestServices.GetService(typeof(TesteContext)) as TesteContext;
+            ViewData["teste"] = teste.GetAllAlbums();
             return View();
         }
 
