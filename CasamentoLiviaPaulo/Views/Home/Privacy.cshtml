@@ -1,37 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Página inicial";
-    Layout = "../Shared/_LayoutLimpo.cshtml";
 }
 
-<div class="topo">
-    <img src="~/img/vetor-topo-titulo.png" class="img-topo-titulo" />
+<div class="topo topo-conteudo">
     <img src="~/img/vetor-topo-bg-1.png" class="img-topo-bg-1" />
-    <img src="~/img/vetor-topo-bg-2.png" class="img-topo-bg-2" />
-    <nav>
-        <div class="ml-4 ml-md-5 mt-3 mt-md-4  d-inline-block">
-            <h2>
-                <span class="text-rosa text-bobbi font-78">Livia <img src="~/img/icone-coração-branco.png" class="coracao-branco" /> Paulo</span>
-            </h2>
-        </div>
-
-        <button class="btn-hamburguer">
-            <span class="hamburguer mt-0"></span>
-            <span class="hamburguer"></span>
-            <span class="hamburguer"></span>
-        </button>
-
-        <div class="ml-5 mt-3 menu-botoes">
-            <button class="btn-fechar-menu">
-                <span class="hamburguer"></span>
-                <span class="hamburguer"></span>
-            </button>
-            <button>Inicio</button>
-            <button>Sobre</button>
-            <button>Fotos</button>
-            <button>Presentes</button>
-            <button>Contato</button>
-        </div>
-    </nav>
+    
     <section class="row m-0 align-items-center topo-conteudo">
         <div class="col-12 col-md-6 pl-md-5 order-1 order-md-0 text-center text-md-left">
             <span class="text-rosa font-weight-bold font-50">Vamos nos</span></br>
@@ -47,7 +20,11 @@
             <img src="~/img/vetor-casal-coracoes.png" class="img-casal-coracoes" />
         </div>
     </section>
+    <div class="divisao-conteudo">
+        <img src="~/img/vetor-topo-bg-2.png" class="img-topo-bg-2" />
+    </div>
 </div>
+
 
 <section class="sobre">
     <h1 class="text-blossom text-rosa text-center mt-2" style="font-size: 60px;">
@@ -109,7 +86,7 @@
                 </div>
             </div>
         </div>
-        <div class="position-relative" style=" height: 30px; margin-top: -40px;">
+        <div class="position-relative" style=" height: 40px; margin-top: -40px;">
             <img src="~/img/vetor-seta.png" class="seta-voltar-foto" />
             <img src="~/img/vetor-seta.png" class="seta-passar-foto" />
         </div>
@@ -167,12 +144,6 @@
         </div>
     </div>
 </section>
-<section class="contato">
-    <hr class="hr-branco" />
-    <p class="text-center text-white font-weight-bold">São paulo - SP</p>
-    <p class="text-center text-white font-weight-bold">(11) 94555-8336</p>
-    <p class="text-center text-white font-weight-bold">Livia e Paulo - 2021 - Todos os direitos reservados</p>
-</section>
 
 <script>
     $(document).ready(function () {
@@ -203,20 +174,5 @@
     $(".seta-voltar-foto").on("click", function () {
         $('.owl-carousel').trigger('prev.owl.carousel');
     });
-
-    $(".btn-hamburguer").click(function () {
-        if ($(".menu-botoes").css("display") == "none") {
-            $(".menu-botoes").css("display", "flex");
-        } else {
-            $(".menu-botoes").css("display", "none");
-        }
-    });
-
-    $(".btn-fechar-menu").click(function () {
-
-        $(".menu-botoes").css("display", "none");
-
-    });
-
 
 </script>
