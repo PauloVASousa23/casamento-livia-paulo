@@ -4,14 +4,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MercadoPago.Resources;
+using CasamentoLiviaPaulo.Repository;
+using System.Net;
+using System.IO;
+using System.Drawing;
 
 namespace CasamentoLiviaPaulo.Controllers
 {
     public class PresentesController : Controller
     {
+        public byte[] GetImgByte(string ftpFilePath)
+        {
+            WebClient ftpClient = new WebClient();
+            ftpClient.Credentials = new NetworkCredential("liviaepaulo", "P@ulo2018");
+
+            byte[] imageByte = ftpClient.DownloadData(ftpFilePath);
+            return imageByte;
+        }
+
+        public static Bitmap ByteToImage(byte[] blob)
+        {
+            MemoryStream mStream = new MemoryStream();
+            byte[] pData = blob;
+            mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+            Bitmap bm = new Bitmap(mStream, false);
+            mStream.Dispose();
+            return bm;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var bt = GetImgByte("ftp://ftp.liviaepaulo.com/imagens/presente/img.webp");
+            var img = ByteToImage(bt);
+            var convert = Convert.ToBase64String(bt);
+            PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
+            ViewData["Imagem"] = convert;
+            return View(model.GetPresentes());
         }
         public IActionResult Detalhe()
         {
