@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<link rel="stylesheet" href="~/css/Presentes.css" />
+
+<h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">Cadastrar presente</h1>
+<div class="container ">
+    <form class="row">
+        <label class="col-12">
+            <p class="text-rosa font-weight-bold">Nome:</p>
+            <input type="text" name="nome" class="form-control w-100" />
+        </label>
+        <label class="col-12">
+            <p class="text-rosa font-weight-bold">Descrição:</p>
+            <textarea rows="2" class="form-control w-100"></textarea>
+        </label>
+        <label class="col-6">
+            <p class="text-rosa font-weight-bold">Preço:</p>
+            <input type="text" name="preco" class="form-control w-100" />
+        </label>
+        <label class="col-6">
+            <p class="text-rosa font-weight-bold">Quantidade:</p>
+            <input type="number" name="quantidade" class="form-control w-100" />
+        </label>
+        <label class="col-12">
+            <p class="text-rosa font-weight-bold">Imagen(s):</p>
+            <input type="file" multiple/>
+        </label>
+        <div class="col-12 text-center mt-3 mb-4">
+            <button type="submit" class="btn btn-rosa mx-2">Salvar</button>
+            <button type="reset" class="btn btn-azul mx-2">Limpar</button>
+            <button class="btn btn-secondary mx-2">Voltar</button>
+        </div>
+    </form>
+</div>

@@ -36,18 +36,18 @@
                     <span class="hamburguer"></span>
                     <span class="hamburguer"></span>
                 </button>
-                @Html.ActionLink("Inicio", "Privacy", "Home")
-                @Html.ActionLink("Sobre", "Privacy", "Home")
-                @Html.ActionLink("Fotos", "Privacy", "Home")
+                <a href="/">Inicio</a>
+                <a href="/#sobre">Sobre</a>
+                <a href="/#fotos">Fotos</a>
                 @Html.ActionLink("Presentes", "Index", "Presentes")
-                @Html.ActionLink("Contato", "Privacy", "Home")
+                <a href="/#contato">Contato</a>
             </div>
         </nav>
     </div>
 
     @RenderBody()
 
-    <section class="contato">
+    <section class="contato" id="contato">
         <hr class="hr-branco" />
         <p class="text-center text-white font-weight-bold">São paulo - SP</p>
         <p class="text-center text-white font-weight-bold">(11) 94555-8336</p>

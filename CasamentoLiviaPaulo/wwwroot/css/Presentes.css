@@ -66,6 +66,7 @@
             position: absolute;
             bottom: -15px;
             right: -5px;
+            z-index: 999;
         }
 
     .presente > .descricao {

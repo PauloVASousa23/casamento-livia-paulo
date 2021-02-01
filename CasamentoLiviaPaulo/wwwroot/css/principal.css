@@ -75,6 +75,7 @@ nav{
         margin: 0px 30px;
         outline: none !important;
         text-decoration: none;
+        text-align: center;
     }
 
 .btn-hamburguer, .btn-fechar-menu {
@@ -125,6 +126,7 @@ nav{
 
 .sobre {
     padding: 30px 0px;
+    background-color: #f3f0f8;
 }
 
 .img-noiva {
@@ -193,6 +195,16 @@ img.seta-passar-foto {
     background-color: #202148;
     padding: 30px;
     margin-top: -7px;
+}
+
+.em-breve-img {
+    font-size: 2rem;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-36deg);
+    font-weight: bold;
 }
 
 /*******************/
@@ -280,7 +292,6 @@ img.seta-passar-foto {
     .img-topo-bg-1 {
         position: absolute;
         top: 0px;
-        right: -200px;
         height: 120vh;
     }
 
@@ -289,11 +300,11 @@ img.seta-passar-foto {
         left: 0px;
         bottom: -0px;
         width: 300px;
+        z-index: -1;
     }
 
     .topo-conteudo {
-        height: calc(70vh);
-        margin-top: 80px !important;
+        height: calc(100vh - 55px);
     }
 
     .font-50 {
@@ -377,5 +388,30 @@ img.seta-passar-foto {
             transform: rotate(-45deg);
             margin-top: -5px;
         }
+
+    .divisao-conteudo::before {
+        content: '';
+        width: 60vw;
+        height: 60px;
+        transform: rotate(-5deg);
+        background-color: #F3F0F8;
+        position: absolute;
+        bottom: -30px;
+        right: -10px;
+        z-index: 1;
+        filter: drop-shadow(12px 4px 6px rgba(0,0,0,0.2));
+    }
+
+    .divisao-conteudo::after {
+        content: '';
+        width: 60vw;
+        height: 60px;
+        transform: rotate(5deg);
+        background-color: #F3F0F8;
+        position: absolute;
+        bottom: -30px;
+        left: -10px;
+        filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+    }
 
 }

@@ -34,13 +34,18 @@ namespace CasamentoLiviaPaulo.Controllers
 
         public IActionResult Index()
         {
-            var bt = GetImgByte("ftp://ftp.liviaepaulo.com/imagens/presente/img.webp");
+            var bt = GetImgByte("ftp://ftp.liviaepaulo.com/imagens/presente/panelas.jpg");
             var img = ByteToImage(bt);
             var convert = Convert.ToBase64String(bt);
             PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
             ViewData["Imagem"] = convert;
             return View(model.GetPresentes());
         }
+        public IActionResult Cadastrar()
+        {
+            return View();
+        }
+
         public IActionResult Detalhe()
         {
             Preference preference = new Preference();
