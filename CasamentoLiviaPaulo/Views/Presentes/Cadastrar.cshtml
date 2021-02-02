@@ -16,31 +16,29 @@
         <input type="text" name="timestamp" class="form-control w-100 hide" value="@ViewData["Timestamp"]" hidden/>
         <label class="col-12">
             <p class="text-rosa font-weight-bold">Nome:</p>
-            <input type="text" name="nome" class="form-control w-100" />
+            <input type="text" name="nome" class="form-control w-100" id="nome" min="5" required/>
         </label>
         <label class="col-12">
             <p class="text-rosa font-weight-bold">Descrição:</p>
-            <textarea rows="2" class="form-control w-100" name="descricao"></textarea>
+            <textarea rows="2" class="form-control w-100" name="descricao" id="descricao" min="10" required></textarea>
         </label>
         <label class="col-6">
             <p class="text-rosa font-weight-bold">Preço:</p>
-            <input type="text" name="preco" class="form-control w-100" />
+            <input type="text" name="preco" class="form-control w-100" id="preco" min="1" required/>
         </label>
         <label class="col-6">
             <p class="text-rosa font-weight-bold">Quantidade:</p>
-            <input type="number" name="quantidade" class="form-control w-100" />
+            <input type="number" name="quantidade" class="form-control w-100" id="quantidade" min="1" required/>
         </label>
         <label class="col-12">
             <p class="text-rosa font-weight-bold">Imagen(s):</p>
             <input id="arquivos" type="file" multiple onchange="enviarImagem(this)" />
         </label>
-        <div>
 
-            <div class="owl-carousel" id="imgPreview">
-
-            </div>
+        <div id="imgPreview">
 
         </div>
+
         <div class="col-12 text-center mt-3 mb-4">
             <button type="submit" class="btn btn-rosa mx-2">Salvar</button>
             <button type="reset" class="btn btn-azul mx-2">Limpar</button>
@@ -67,7 +65,15 @@
     //    }
     //)();
 
+    let imgs = [];
+
     function enviarImagem(ev) {
+
+        if (nome.value.length < 2 || descricao.value.length < 5 || preco.value.length < 1 || quantidade.value.length < 1) {
+            alert("Algum dos campos está vazio ou muito pequeno!");
+            return false;
+        }
+
         var input = document.getElementById("arquivos");
         var files = input.files;
         var formData = new FormData();
@@ -86,34 +92,43 @@
                 success: function (data) {
                     let container = document.querySelector("#imgPreview");
                     data.forEach(e => {
+                        let div = document.createElement("div");
                         let img = document.createElement("img");
+                        let btnExcluir = document.createElement("button");
                         img.setAttribute("src", "data:image/png;base64, " + e.arquivo);
                         img.setAttribute("data", e.timestamp);
-                        container.append(img);
+
+                        btnExcluir.append("x");
+                        btnExcluir.classList.add("btnExcluirImagem");
+                        btnExcluir.setAttribute("type", "button");
+                        btnExcluir.setAttribute("onclick", "deletarImagem('" + e.timestamp + "')");
+
+                        div.append(img);
+                        div.append(btnExcluir);
+                        container.append(div);
+                        imgs.push(div);
                     });
 
-                    var owl = $('.owl-carousel');
-                    owl.owlCarousel({
-                        margin: 10,
-                        loop: true,
-                        center: true,
-                        autoWidth: true,
-                        responsive: {
-                            0: {
-                                items: 1
-                            },
-                            600: {
-                                items: 3
-                            },
-                            1000: {
-                                items: 5
-                            }
-                        }
-                    })
-
-                    console.log(data);
                 }
             }
         );
+    }
+
+    function deletarImagem(ev) {
+        $.ajax(
+            {
+                url: "/presentes/DeletarImagem?caminho=" + ev,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    if (data) {
+                        $("img[data='" + ev + "']").parent().remove();
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
     }
 </script>

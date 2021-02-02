@@ -1,4 +1,5 @@
-﻿@*
+﻿@model Presente
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
@@ -12,9 +13,9 @@
     }
 </style>
 
-<h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">Panelas</h1>
+<h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">@Model.Nome</h1>
 <p class="text-azul text-center font-weight-bold">
-    Após 5 anos de relacionamento, enfim vamos nos casar, ksjdafhaksjdfh jfdkhasdfjhfhdjf hsdfhdsfd fsdf dfhdsfh sdfjhsdf hsdf jsdhf sjdf hsjdfh sjdf hsdfjh.
+    @Model.Descricao
 </p>
 
 <div class="container-imagens">
@@ -30,7 +31,7 @@
 </div>
 
 <div class="my-3 text-center">
-    <span class="preco-detalhe">R$ 00,00</span>
+    <span class="preco-detalhe">R$ @Model.Preco</span>
     <div class="w-100"></div>
     <button class="btn-dar-presente mt-4 mb-3" data-toggle="modal" data-target="#exampleModal">COMPRAR PRESENTE</button>
 </div>
@@ -50,10 +51,10 @@
                 <span class="col-12 text-center font-weight-bold h4 mt-3">Detalhes da compra:</span>
                 <div class="row">
                     <div class="col-12">
-                        <span class="font-weight-bold">Produto: </span><span>Panela</span>
+                        <span class="font-weight-bold">Produto: </span><span>@Model.Nome</span>
                     </div>
                     <div class="col-12">
-                        <span class="font-weight-bold">Valor: </span><span>R$ 00,00</span>
+                        <span class="font-weight-bold">Valor: </span><span>R$ @Model.Preco</span>
                     </div>
                 </div>
                 <div class="col-12 text-center pt-3">

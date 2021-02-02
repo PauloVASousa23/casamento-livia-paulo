@@ -21,6 +21,35 @@ namespace CasamentoLiviaPaulo.Repository
             return new MySqlConnection(_connectionString);
         }
 
+        public List<Imagens> GetImagens(string timestamp)
+        {
+            string query = "SELECT * FROM imagens WHERE TimestampPresente = @Timestamp";
+            var conn = GetConnection();
+
+            List<Imagens> listaImagens = new List<Imagens>();
+            using (MySqlConnection cnx = GetConnection())
+            {
+                cnx.Open();
+                MySqlCommand cmd = new MySqlCommand(query, cnx);
+                cmd.Parameters.AddWithValue("@Timestamp", timestamp);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        listaImagens.Add(new Imagens()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Caminho = reader["Caminho"].ToString(),
+                            TimestampPresente = reader["TimestampPresente"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return listaImagens;
+        }
+
         public bool CadastrarImagem(Imagens img)
         {
             string query = "INSERT INTO imagens (Caminho, TimestampPresente) VALUES (@Caminho, @TimestampPresente)";
@@ -45,5 +74,30 @@ namespace CasamentoLiviaPaulo.Repository
                 return reader > 0;
             }
         }
+
+        public bool DeletarImagem(string caminho)
+        {
+            string query = "DELETE FROM imagens WHERE Caminho = @Caminho";
+
+            using (MySqlConnection cnx = GetConnection())
+            {
+                int reader;
+
+                cnx.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand(query, cnx))
+                {
+                    cmd.Parameters.AddWithValue("@Caminho", caminho);
+
+                    reader = cmd.ExecuteNonQuery();
+
+                }
+
+                cnx.Close();
+
+                return reader > 0;
+            }
+        }
+
     }
 }

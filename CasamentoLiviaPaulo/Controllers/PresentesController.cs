@@ -23,7 +23,7 @@ namespace CasamentoLiviaPaulo.Controllers
             WebClient ftpClient = new WebClient();
             ftpClient.Credentials = new NetworkCredential("liviaepaulo", "P@ulo2018");
 
-            byte[] imageByte = ftpClient.DownloadData("ftp://ftp.liviaepaulo.com" + ftpFilePath);
+            byte[] imageByte = ftpClient.DownloadData("ftp://ftp.liviaepaulo.com/imagens/presente/" + ftpFilePath);
             return imageByte;
         }
 
@@ -37,14 +37,33 @@ namespace CasamentoLiviaPaulo.Controllers
             return bm;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pagina = 0)
         {
             //var bt = GetImgByte("ftp://ftp.liviaepaulo.com/imagens/presente/panelas.jpg");
             //var img = ByteToImage(bt);
             //var convert = Convert.ToBase64String(bt);
             //ViewData["Imagem"] = convert;
             PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
-            return View(model.GetPresentes());
+            ImagensRepository modelImagens = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;
+            List<Presente> presentes = model.GetPresentes(pagina);
+            foreach (Presente p in presentes)
+            {
+                p.imagens = modelImagens.GetImagens(p.Timestamp);
+                if (p.imagens.Count > 0)
+                {
+                    p.base64 = new List<string>();
+                }
+
+                foreach(Imagens i in p.imagens)
+                {
+                    var bytes = GetImgByte(i.Caminho);
+                    p.base64.Add(Convert.ToBase64String(bytes));
+                }
+            }
+
+            ViewData["PaginaAtual"] = pagina;
+
+            return View(presentes);
         }
         public IActionResult Cadastrar()
         {
@@ -72,26 +91,31 @@ namespace CasamentoLiviaPaulo.Controllers
             return View("Cadastrar");
         }
 
-        public IActionResult Detalhe()
+        [Route("Presentes/detalhe/{id}")]
+        public IActionResult Detalhe(int id)
         {
+            PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
+
+            Presente p = model.GetPresenteId(id);
+
             Preference preference = new Preference();
 
             // Cria um item na preferência
             preference.Items.Add(
               new MercadoPago.DataStructures.Preference.Item()
               {
-                  Id = "123456",
-                  Title = "Panela",
-                  Quantity = 1,
+                  Id = p.Id.ToString(),
+                  Title = p.Nome,
+                  Quantity = p.Quantidade,
                   CurrencyId = MercadoPago.Common.CurrencyId.BRL,
-                  UnitPrice = (decimal)75.56
+                  UnitPrice = (decimal)p.Preco
               }
             );
 
-            preference.Payer = new MercadoPago.DataStructures.Preference.Payer()
-            {
-                Email = "brando_armstrong@yahoo.com"
-            };
+            //preference.Payer = new MercadoPago.DataStructures.Preference.Payer()
+            //{
+            //    Email = "paulinho_vtr@live.com"
+            //};
 
             preference.BackUrls = new MercadoPago.DataStructures.Preference.BackUrls()
             {
@@ -103,7 +127,7 @@ namespace CasamentoLiviaPaulo.Controllers
             preference.Save();
 
             ViewData["preferences"] = preference.Id;
-            return View(preference);
+            return View(p);
         }
         public IActionResult Sucesso()
         {
@@ -112,7 +136,7 @@ namespace CasamentoLiviaPaulo.Controllers
 
         public List<string> GetImagens()
         {
-            var i = GetImgByte("/imagens/presente/panelas.jpg");
+            var i = GetImgByte("panelas.jpg");
             List<string> imagens = new List<string>();
             imagens.Add(Convert.ToBase64String(i));
 
@@ -180,6 +204,13 @@ namespace CasamentoLiviaPaulo.Controllers
             }
 
             return imgs;
+        }
+
+        public bool DeletarImagem(string caminho)
+        {
+            ImagensRepository model = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;
+            
+            return model.DeletarImagem(caminho);
         }
 
     }

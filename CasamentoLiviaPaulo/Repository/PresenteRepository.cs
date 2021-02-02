@@ -21,6 +21,34 @@ namespace CasamentoLiviaPaulo.Repository
             return new MySqlConnection(_connectionString);
         }
 
+        public Presente GetPresenteId(int id)
+        {
+            string query = "SELECT * FROM presente WHERE Id = @Id";
+            var conn = GetConnection();
+
+            Presente Presente = new Presente();
+            using (MySqlConnection cnx = GetConnection())
+            {
+                cnx.Open();
+                MySqlCommand cmd = new MySqlCommand(query, cnx);
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Presente.Id = Convert.ToInt32(reader["Id"]);
+                        Presente.Nome = reader["Nome"].ToString();
+                        Presente.Descricao = reader["Descricao"].ToString();
+                        Presente.Preco = float.Parse(reader["Preco"].ToString());
+                        Presente.Quantidade = Convert.ToInt32(reader["Quantidade"]);
+                        Presente.Timestamp = reader["Timestamp"].ToString();
+                    }
+                }
+            }
+
+            return Presente;
+        }
         public Presente GetPresenteTimestamp(string timestamp)
         {
             string query = "SELECT * FROM presente WHERE Timestamp = @Timestamp";
@@ -71,7 +99,51 @@ namespace CasamentoLiviaPaulo.Repository
                             Nome = reader["Nome"].ToString(),
                             Descricao = reader["Descricao"].ToString(),
                             Preco = float.Parse(reader["Preco"].ToString()),
-                            Quantidade = Convert.ToInt32(reader["Quantidade"])
+                            Quantidade = Convert.ToInt32(reader["Quantidade"]),
+                            Timestamp = reader["Timestamp"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return listaPresentes;
+        }
+
+        public List<Presente> GetPresentes(int pagina)
+        {
+            int inicio = pagina * 20;
+            int fim = inicio + 20;
+            string query = "SELECT * FROM presente ORDER BY Preco LIMIT " + inicio + "," + fim;
+            string queryCount = "SELECT count(*) as Registros FROM presente";
+            var conn = GetConnection();
+
+            List<Presente> listaPresentes = new List<Presente>();
+            using (MySqlConnection cnx = GetConnection())
+            {
+                cnx.Open();
+                MySqlCommand cmd = new MySqlCommand(query, cnx);
+                MySqlCommand cmd2 = new MySqlCommand(queryCount, cnx);
+                int count = 0;
+                using (var reader = cmd2.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        count = Convert.ToInt32(reader["Registros"]);
+                    }
+                }
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        listaPresentes.Add(new Presente()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nome = reader["Nome"].ToString(),
+                            Descricao = reader["Descricao"].ToString(),
+                            Preco = float.Parse(reader["Preco"].ToString()),
+                            Quantidade = Convert.ToInt32(reader["Quantidade"]),
+                            Timestamp = reader["Timestamp"].ToString(),
+                            Registros = count/20
                         });
                     }
                 }

@@ -32,7 +32,7 @@
 
     .presente > .imagens {
         width: 180px;
-        height: 100px;
+        height: 105px;
         background-color: #fff;
         border: 1px dashed #202148;
         position: relative;
@@ -52,6 +52,7 @@
             position: absolute;
             left: -8px;
             top: -8px;
+            z-index: 99999;
         }
 
         .presente > .imagens > .preco {
@@ -137,24 +138,36 @@
 
 /**************/
 
-#imgPreview > div > div > div {
+#imgPreview > div {
     border: 2px dashed #16182f;
     border-radius: 15px;
     height: 100px;
     overflow: hidden;
-    display: flex;
+    display: inline-flex;
     margin: 10px;
     background-color: #fff;
     justify-content: center;
     align-content: center;
+    position: relative;
 }
 
-#imgPreview > div > div > div > img {
-    width: 100px;
+    #imgPreview > div > img {
+        width: 100px;
+    }
+
+.btnExcluirImagem {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100px;
+    border: none;
+    background-color: #b64667;
+    color: #fff;
+    font-weight: bold;
 }
 
-.owl-carousel {
-    width: 100vw !important;
-    height: 110px;
+.owl-item > div{
     overflow: hidden;
 }

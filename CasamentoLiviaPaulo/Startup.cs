@@ -26,14 +26,15 @@ namespace CasamentoLiviaPaulo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.Add(new ServiceDescriptor(typeof(PresenteRepository), new PresenteRepository(Configuration.GetConnectionString("DevConnection"))));
-            services.Add(new ServiceDescriptor(typeof(ImagensRepository), new ImagensRepository(Configuration.GetConnectionString("DevConnection"))));
+            services.Add(new ServiceDescriptor(typeof(PresenteRepository), new PresenteRepository(Configuration.GetConnectionString("ProdConnection"))));
+            services.Add(new ServiceDescriptor(typeof(ImagensRepository), new ImagensRepository(Configuration.GetConnectionString("ProdConnection"))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            MercadoPago.SDK.AccessToken = "TEST-4009994650089143-011318-5321cc2d4e5483554f03ca91b03d68a0-191500391";
+            //MercadoPago.SDK.AccessToken = "TEST-4009994650089143-011318-5321cc2d4e5483554f03ca91b03d68a0-191500391"; //DEV
+            MercadoPago.SDK.AccessToken = "APP_USR-4009994650089143-011318-246e8f46adca36ac9600cb9f57b25a1f-191500391"; //PROD
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
