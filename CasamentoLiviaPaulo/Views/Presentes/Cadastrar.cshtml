@@ -1,19 +1,26 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@{ 
+    if (ViewData["Timestamp"] == null)
+    {
+        ViewData["Timestamp"] = DateTime.Now.ToString("yyyyMMddHHmmssffff");
+    }
+}
 
 <link rel="stylesheet" href="~/css/Presentes.css" />
 
 <h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">Cadastrar presente</h1>
 <div class="container ">
-    <form class="row">
+    <form class="row" method="post" action="salvar">
+        <input type="text" name="timestamp" class="form-control w-100 hide" value="@ViewData["Timestamp"]" hidden/>
         <label class="col-12">
             <p class="text-rosa font-weight-bold">Nome:</p>
             <input type="text" name="nome" class="form-control w-100" />
         </label>
         <label class="col-12">
             <p class="text-rosa font-weight-bold">Descrição:</p>
-            <textarea rows="2" class="form-control w-100"></textarea>
+            <textarea rows="2" class="form-control w-100" name="descricao"></textarea>
         </label>
         <label class="col-6">
             <p class="text-rosa font-weight-bold">Preço:</p>
@@ -25,8 +32,15 @@
         </label>
         <label class="col-12">
             <p class="text-rosa font-weight-bold">Imagen(s):</p>
-            <input type="file" multiple/>
+            <input id="arquivos" type="file" multiple onchange="enviarImagem(this)" />
         </label>
+        <div>
+
+            <div class="owl-carousel" id="imgPreview">
+
+            </div>
+
+        </div>
         <div class="col-12 text-center mt-3 mb-4">
             <button type="submit" class="btn btn-rosa mx-2">Salvar</button>
             <button type="reset" class="btn btn-azul mx-2">Limpar</button>
@@ -34,3 +48,72 @@
         </div>
     </form>
 </div>
+
+<script>
+    //(
+    //    function pegarImagens() {
+    //        $.ajax({
+    //            url: "/presentes/getimagens",
+    //            success: function (data) {
+    //                let container = document.querySelector("#imgPreview");
+    //                let img = document.createElement("img");
+    //                img.setAttribute("src", "data:image/png;base64, " + data[0]);
+    //                container.append(img);
+    //            },
+    //            error: function (data) {
+    //                console.log(data);
+    //            }
+    //        });
+    //    }
+    //)();
+
+    function enviarImagem(ev) {
+        var input = document.getElementById("arquivos");
+        var files = input.files;
+        var formData = new FormData();
+
+        for (var i = 0; i != files.length; i++) {
+            formData.append("files", files[i]);
+        }
+
+        $.ajax(
+            {
+                url: "/presentes/EnviarImagem?timestampPresente=@ViewData["Timestamp"]",
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    let container = document.querySelector("#imgPreview");
+                    data.forEach(e => {
+                        let img = document.createElement("img");
+                        img.setAttribute("src", "data:image/png;base64, " + e.arquivo);
+                        img.setAttribute("data", e.timestamp);
+                        container.append(img);
+                    });
+
+                    var owl = $('.owl-carousel');
+                    owl.owlCarousel({
+                        margin: 10,
+                        loop: true,
+                        center: true,
+                        autoWidth: true,
+                        responsive: {
+                            0: {
+                                items: 1
+                            },
+                            600: {
+                                items: 3
+                            },
+                            1000: {
+                                items: 5
+                            }
+                        }
+                    })
+
+                    console.log(data);
+                }
+            }
+        );
+    }
+</script>

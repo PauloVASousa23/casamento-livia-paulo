@@ -12,6 +12,7 @@ namespace CasamentoLiviaPaulo.Models
         public string Descricao { get; set; }
         public float Preco { get; set; }
         public int Quantidade { get; set; }
+        public string Timestamp { get; set; }
     }
 
 }

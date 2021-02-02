@@ -9,6 +9,6 @@ namespace CasamentoLiviaPaulo.Models
     {
         public int Id { get; set; }
         public string Caminho { get; set; }
-        public int Presente_Id { get; set; }
+        public string TimestampPresente { get; set; }
     }
 }

@@ -26,8 +26,8 @@ namespace CasamentoLiviaPaulo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.Add(new ServiceDescriptor(typeof(TesteContext), new TesteContext(Configuration.GetConnectionString("DefaultConnection"))));
             services.Add(new ServiceDescriptor(typeof(PresenteRepository), new PresenteRepository(Configuration.GetConnectionString("DevConnection"))));
+            services.Add(new ServiceDescriptor(typeof(ImagensRepository), new ImagensRepository(Configuration.GetConnectionString("DevConnection"))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

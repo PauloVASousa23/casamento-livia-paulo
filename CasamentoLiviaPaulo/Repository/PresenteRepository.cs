@@ -21,6 +21,35 @@ namespace CasamentoLiviaPaulo.Repository
             return new MySqlConnection(_connectionString);
         }
 
+        public Presente GetPresenteTimestamp(string timestamp)
+        {
+            string query = "SELECT * FROM presente WHERE Timestamp = @Timestamp";
+            var conn = GetConnection();
+
+            Presente Presente = new Presente();
+            using (MySqlConnection cnx = GetConnection())
+            {
+                cnx.Open();
+                MySqlCommand cmd = new MySqlCommand(query, cnx);
+                cmd.Parameters.AddWithValue("@Timestamp", timestamp);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Presente.Id = Convert.ToInt32(reader["Id"]);
+                        Presente.Nome = reader["Nome"].ToString();
+                        Presente.Descricao = reader["Descricao"].ToString();
+                        Presente.Preco = float.Parse(reader["Preco"].ToString());
+                        Presente.Quantidade = Convert.ToInt32(reader["Quantidade"]);
+                        Presente.Timestamp = reader["Timestamp"].ToString();
+                    }
+                }
+            }
+
+            return Presente;
+        }
+
         public List<Presente> GetPresentes()
         {
             string query = "SELECT * FROM presente";
@@ -49,6 +78,33 @@ namespace CasamentoLiviaPaulo.Repository
             }
 
             return listaPresentes;
+        }
+
+        public bool CadastrarPresente(Presente p)
+        {
+            string query = "INSERT INTO presente (Nome, Descricao, Preco, Quantidade, Timestamp) VALUES (@Nome, @Descricao, @Preco, @Quantidade, @Timestamp)";
+
+            using(MySqlConnection cnx = GetConnection())
+            {
+                int reader;
+
+                cnx.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand(query, cnx)) {
+                    cmd.Parameters.AddWithValue("@Nome", p.Nome);
+                    cmd.Parameters.AddWithValue("@Descricao", p.Descricao);
+                    cmd.Parameters.AddWithValue("@Preco", p.Preco);
+                    cmd.Parameters.AddWithValue("@Quantidade", p.Quantidade);
+                    cmd.Parameters.AddWithValue("@Timestamp", p.Timestamp);
+
+                    reader = cmd.ExecuteNonQuery();
+
+                }
+
+                cnx.Close();
+
+                return reader > 0;
+            }
         }
 
     }

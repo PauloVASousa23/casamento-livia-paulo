@@ -134,3 +134,27 @@
     padding: 5px 40px;
     border-radius: 5px;
 }
+
+/**************/
+
+#imgPreview > div > div > div {
+    border: 2px dashed #16182f;
+    border-radius: 15px;
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    margin: 10px;
+    background-color: #fff;
+    justify-content: center;
+    align-content: center;
+}
+
+#imgPreview > div > div > div > img {
+    width: 100px;
+}
+
+.owl-carousel {
+    width: 100vw !important;
+    height: 110px;
+    overflow: hidden;
+}
