@@ -2,29 +2,26 @@
 
 <link rel="stylesheet" href="~/css/Presentes.css" />
 
-<h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">Presentes</h1>
-<p class="text-azul text-center font-weight-bold">
-    Querido convidado seja bem-vindo a nossa lista de presentes. Pensamos em tudo com muito carinho para que você se sinta à vontade para nos presentear com o que sentir vontade.
-</p>
+<h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">Editar presentes</h1>
 
 @*<div class="container-categorias">
-    <a href="#" class="text-decoration-none text-azul font-weight-bold">
-        <img src="~/img/icone-eletrodomesticos.png" />
-        <span>Eletrodomesticos</span>
-    </a>
-    <a href="#" class="text-decoration-none text-azul font-weight-bold">
-        <img src="~/img/icone-panelas.png" />
-        <span>Panelas</span>
-    </a>
-    <a href="#" class="text-decoration-none text-azul font-weight-bold">
-        <img src="~/img/icone-utensilios.png" />
-        <span>Utensilios</span>
-    </a>
-    <a href="#" class="text-decoration-none text-azul font-weight-bold">
-        <img src="~/img/icone-lazer.png" />
-        <span>Lazer</span>
-    </a>
-</div>*@
+        <a href="#" class="text-decoration-none text-azul font-weight-bold">
+            <img src="~/img/icone-eletrodomesticos.png" />
+            <span>Eletrodomesticos</span>
+        </a>
+        <a href="#" class="text-decoration-none text-azul font-weight-bold">
+            <img src="~/img/icone-panelas.png" />
+            <span>Panelas</span>
+        </a>
+        <a href="#" class="text-decoration-none text-azul font-weight-bold">
+            <img src="~/img/icone-utensilios.png" />
+            <span>Utensilios</span>
+        </a>
+        <a href="#" class="text-decoration-none text-azul font-weight-bold">
+            <img src="~/img/icone-lazer.png" />
+            <span>Lazer</span>
+        </a>
+    </div>*@
 
 <hr class="hr-azul" />
 
@@ -37,18 +34,19 @@
                     <span class="quantidade">@presente.Quantidade</span>
                     <span class="preco">R$ @presente.Preco</span>
                     <div class="owl-carousel">
-                        @if (presente.base64 != null) {
+                        @if (presente.base64 != null)
+                        {
                             foreach (String img in presente.base64)
                             {
-                            <div style="display:flex;justify-content: center;" class="width-img-owl">
-                                <img src="data:image/png;base64, @img" style="height: 100px;width: 100px;" />
-                            </div>
+                                <div style="display:flex;justify-content: center;" class="width-img-owl">
+                                    <img src="data:image/png;base64, @img" style="height: 100px;width: 100px;" />
+                                </div>
                             }
                         }
                     </div>
                 </div>
                 <span class="descricao">@presente.Nome</span>
-                <a href="/Presentes/detalhe/@presente.Id" class="btn-rounded btn-azul text-white text-decoration-none" style="z-index: 9999">Presentear</a>
+                <a href="/Presentes/Editar/@presente.Id" class="btn-rounded btn-azul text-white text-decoration-none" style="z-index: 9999">Editar</a>
             </div>
         </div>
     }
@@ -66,19 +64,19 @@
 
     @for (int i = 0; i <= Model[0].Registros; i++)
     {
-        @if (Int32.Parse(ViewData["PaginaAtual"].ToString())+1 == i+1)
+        @if (Int32.Parse(ViewData["PaginaAtual"].ToString()) + 1 == i + 1)
         {
-            <a href="/presentes?pagina=@(i)" class="paginacao-active">@(i + 1)</a>
+            <a href="/presentes/editar?pagina=@(i)" class="paginacao-active">@(i + 1)</a>
         }
         else
         {
-            <a href="/presentes?pagina=@(i)">@(i + 1)</a>
+            <a href="/presentes/editar?pagina=@(i)">@(i + 1)</a>
         }
     }
 
     @if (Int32.Parse(ViewData["PaginaAtual"].ToString()) < Model.Count / 20)
     {
-        <a href="/presentes?pagina=@(Int32.Parse(ViewData["PaginaAtual"].ToString())+1)">></a>
+        <a href="/presentes/editar?pagina=@(Int32.Parse(ViewData["PaginaAtual"].ToString())+1)">></a>
     }
     else
     {
@@ -87,6 +85,16 @@
 </div>
 
 <script type="text/javascript">
+    (
+        function alertaCadastro() {
+            let cadastrou = "@TempData["atualizou"]";
+            if (cadastrou && cadastrou != "False") {
+                alert("Presente atualizado com sucesso!");
+            }
+        }
+
+    )();
+
     $(document).ready(function () {
         var owl = $('.owl-carousel');
         owl.owlCarousel({

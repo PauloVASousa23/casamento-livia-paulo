@@ -12,8 +12,8 @@
 
 <h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">Cadastrar presente</h1>
 <div class="container ">
-    <form class="row" method="post" action="salvar">
-        <input type="text" name="timestamp" class="form-control w-100 hide" value="@ViewData["Timestamp"]" hidden/>
+    <form class="row" onsubmit="return false">
+        <input type="text" id="timestamp" name="timestamp" class="form-control w-100 hide" value="@ViewData["Timestamp"]" hidden/>
         <label class="col-12">
             <p class="text-rosa font-weight-bold">Nome:</p>
             <input type="text" name="nome" class="form-control w-100" id="nome" min="5" required/>
@@ -40,39 +40,18 @@
         </div>
 
         <div class="col-12 text-center mt-3 mb-4">
-            <button type="submit" class="btn btn-rosa mx-2">Salvar</button>
+            <button type="submit" onclick="cadastrarPresente()" class="btn btn-rosa mx-2">Salvar</button>
             <button type="reset" class="btn btn-azul mx-2">Limpar</button>
-            <button class="btn btn-secondary mx-2">Voltar</button>
+            <button type="button" onclick="window.location='/presentes'" class="btn btn-secondary mx-2">Voltar</button>
         </div>
     </form>
 </div>
 
 <script>
-    //(
-    //    function pegarImagens() {
-    //        $.ajax({
-    //            url: "/presentes/getimagens",
-    //            success: function (data) {
-    //                let container = document.querySelector("#imgPreview");
-    //                let img = document.createElement("img");
-    //                img.setAttribute("src", "data:image/png;base64, " + data[0]);
-    //                container.append(img);
-    //            },
-    //            error: function (data) {
-    //                console.log(data);
-    //            }
-    //        });
-    //    }
-    //)();
 
     let imgs = [];
 
     function enviarImagem(ev) {
-
-        if (nome.value.length < 2 || descricao.value.length < 5 || preco.value.length < 1 || quantidade.value.length < 1) {
-            alert("Algum dos campos está vazio ou muito pequeno!");
-            return false;
-        }
 
         var input = document.getElementById("arquivos");
         var files = input.files;
@@ -82,9 +61,11 @@
             formData.append("files", files[i]);
         }
 
+        let textTimestamp = document.querySelector("#timestamp").value;
+
         $.ajax(
             {
-                url: "/presentes/EnviarImagem?timestampPresente=@ViewData["Timestamp"]",
+                url: "/presentes/EnviarImagem?timestampPresente=" + textTimestamp,
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -130,5 +111,39 @@
                     console.log(data);
                 }
             });
+    }
+
+    function cadastrarPresente(ev) {
+        if (nome.value.length < 2 || descricao.value.length < 5 || preco.value.length < 1 || quantidade.value.length < 1) {
+            alert("Algum dos campos está vazio ou muito pequeno!");
+            return false;
+        }
+
+        let textNome = nome.value;
+        let textDescricao = descricao.value;
+        let textPreco = preco.value;
+        let textQuantidade = quantidade.value;
+        let textTimestamp = document.querySelector("#timestamp").value;
+
+        $.ajax(
+            {
+                url: "/presentes/salvar?nome=" + textNome + "&descricao=" + textDescricao + "&preco=" + textPreco + "&quantidade=" + textQuantidade + "&timestamp=" + textTimestamp,
+                type: "GET",
+                success: function (data) {
+                    if (data) {
+                        Swal.fire(
+                            'Cadastrado!',
+                            'Presente ' + textNome + ' cadastrado com sucesso',
+                            'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location = '@Url.Action("Cadastrar","Presentes")'
+                                }
+                            });
+                    }
+                }
+            }
+        );
+
     }
 </script>

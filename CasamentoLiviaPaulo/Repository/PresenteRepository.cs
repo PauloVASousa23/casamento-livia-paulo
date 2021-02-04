@@ -179,5 +179,52 @@ namespace CasamentoLiviaPaulo.Repository
             }
         }
 
+        public bool AtualizarPresente(Presente p)
+        {
+            string query = "UPDATE presente SET Nome = @Nome, Descricao = @Descricao, Preco = @Preco, Quantidade = @Quantidade, Timestamp = @Timestamp WHERE Timestamp = @Timestamp";
+
+            using (MySqlConnection cnx = GetConnection())
+            {
+                int reader;
+
+                cnx.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand(query, cnx))
+                {
+                    cmd.Parameters.AddWithValue("@Nome", p.Nome);
+                    cmd.Parameters.AddWithValue("@Descricao", p.Descricao);
+                    cmd.Parameters.AddWithValue("@Preco", p.Preco);
+                    cmd.Parameters.AddWithValue("@Quantidade", p.Quantidade);
+                    cmd.Parameters.AddWithValue("@Timestamp", p.Timestamp);
+
+                    reader = cmd.ExecuteNonQuery();
+
+                }
+
+                cnx.Close();
+
+                return reader > 0;
+            }
+        }
+
+        public bool DeletarPresente(int id)
+        {
+            string query = "DELETE FROM presente WHERE Id = @Id";
+            var conn = GetConnection();
+
+            using (MySqlConnection cnx = GetConnection())
+            {
+                cnx.Open();
+                MySqlCommand cmd = new MySqlCommand(query, cnx);
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                var retorno = cmd.ExecuteNonQuery();
+
+                return retorno > 0;
+            }
+
+            return false;
+        }
+
     }
 }

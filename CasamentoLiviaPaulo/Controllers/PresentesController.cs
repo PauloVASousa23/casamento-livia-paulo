@@ -39,10 +39,6 @@ namespace CasamentoLiviaPaulo.Controllers
 
         public IActionResult Index(int pagina = 0)
         {
-            //var bt = GetImgByte("ftp://ftp.liviaepaulo.com/imagens/presente/panelas.jpg");
-            //var img = ByteToImage(bt);
-            //var convert = Convert.ToBase64String(bt);
-            //ViewData["Imagem"] = convert;
             PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
             ImagensRepository modelImagens = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;
             List<Presente> presentes = model.GetPresentes(pagina);
@@ -65,16 +61,54 @@ namespace CasamentoLiviaPaulo.Controllers
 
             return View(presentes);
         }
-        public IActionResult Cadastrar()
+        public IActionResult Editar(int pagina = 0)
         {
-            ViewData["Timestamp"] = DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            return View();
+            PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
+            ImagensRepository modelImagens = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;
+            List<Presente> presentes = model.GetPresentes(pagina);
+            foreach (Presente p in presentes)
+            {
+                p.imagens = modelImagens.GetImagens(p.Timestamp);
+                if (p.imagens.Count > 0)
+                {
+                    p.base64 = new List<string>();
+                }
+
+                foreach (Imagens i in p.imagens)
+                {
+                    var bytes = GetImgByte(i.Caminho);
+                    p.base64.Add(Convert.ToBase64String(bytes));
+                }
+            }
+
+            ViewData["PaginaAtual"] = pagina;
+
+            return View(presentes);
         }
 
-        public string timestampPresente;
+        [Route("/Presentes/Editar/{id}")]
+        public IActionResult EditarPresente(int id)
+        {
+            PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
+            ImagensRepository modelImagens = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;
 
+            Presente p = model.GetPresenteId(id);
+            p.imagens = modelImagens.GetImagens(p.Timestamp);
+            if (p.imagens.Count > 0)
+            {
+                p.base64 = new List<string>();
+            }
+
+            foreach (Imagens i in p.imagens)
+            {
+                var bytes = GetImgByte(i.Caminho);
+                p.base64.Add(Convert.ToBase64String(bytes));
+            }
+
+            return View(p);
+        }
         [HttpPost]
-        public IActionResult Salvar(string nome, string descricao, string preco, int quantidade, string timestamp)
+        public IActionResult Atualizar(string nome, string descricao, string preco, int quantidade, string timestamp)
         {
 
             Presente p = new Presente();
@@ -86,17 +120,59 @@ namespace CasamentoLiviaPaulo.Controllers
 
             PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
 
-            ViewData["cadastrou"] = model.CadastrarPresente(p);
+            TempData["atualizou"] = model.AtualizarPresente(p);
 
-            return View("Cadastrar");
+            return RedirectToAction("Editar");
+        }
+        [Route("/Presentes/Deletar/{id}")]
+        public bool DeletarPresente(int id)
+        {
+            PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
+
+            return model.DeletarPresente(id);
+        }
+        public IActionResult Cadastrar()
+        {
+            ViewData["Timestamp"] = DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            return View();
+        }
+
+        public string timestampPresente;
+
+        [HttpGet]
+        public bool Salvar(string nome, string descricao, string preco, int quantidade, string timestamp)
+        {
+
+            Presente p = new Presente();
+            p.Nome = nome;
+            p.Descricao = descricao;
+            p.Preco = float.Parse(preco);
+            p.Quantidade = quantidade;
+            p.Timestamp = timestamp;
+
+            PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
+
+            return model.CadastrarPresente(p);
         }
 
         [Route("Presentes/detalhe/{id}")]
         public IActionResult Detalhe(int id)
         {
             PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
+            ImagensRepository modelImagens = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;
 
             Presente p = model.GetPresenteId(id);
+            p.imagens = modelImagens.GetImagens(p.Timestamp);
+            if (p.imagens.Count > 0)
+            {
+                p.base64 = new List<string>();
+            }
+
+            foreach (Imagens i in p.imagens)
+            {
+                var bytes = GetImgByte(i.Caminho);
+                p.base64.Add(Convert.ToBase64String(bytes));
+            }
 
             Preference preference = new Preference();
 
@@ -111,11 +187,6 @@ namespace CasamentoLiviaPaulo.Controllers
                   UnitPrice = (decimal)p.Preco
               }
             );
-
-            //preference.Payer = new MercadoPago.DataStructures.Preference.Payer()
-            //{
-            //    Email = "paulinho_vtr@live.com"
-            //};
 
             preference.BackUrls = new MercadoPago.DataStructures.Preference.BackUrls()
             {
@@ -133,7 +204,6 @@ namespace CasamentoLiviaPaulo.Controllers
         {
             return View();
         }
-
         public List<string> GetImagens()
         {
             var i = GetImgByte("panelas.jpg");
@@ -143,7 +213,6 @@ namespace CasamentoLiviaPaulo.Controllers
             return imagens;
 
         }
-
         [HttpPost]
         public async Task<List<ImagemParcial>> EnviarImagem(string timestampPresente)
         {
@@ -205,7 +274,6 @@ namespace CasamentoLiviaPaulo.Controllers
 
             return imgs;
         }
-
         public bool DeletarImagem(string caminho)
         {
             ImagensRepository model = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;

@@ -1,0 +1,182 @@
+﻿@model Presente;
+
+@{
+    if (ViewData["Timestamp"] == null)
+    {
+        ViewData["Timestamp"] = DateTime.Now.ToString("yyyyMMddHHmmssffff");
+    }
+}
+
+<link rel="stylesheet" href="~/css/Presentes.css" />
+
+<h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">Editar presente</h1>
+<div class="container ">
+    <form class="row" method="post" action="/Presentes/Atualizar">
+        <input type="text" name="timestamp" class="form-control w-100 hide"  value="@Model.Timestamp" hidden />
+        <label class="col-12">
+            <p class="text-rosa font-weight-bold">Nome:</p>
+            <input type="text" name="nome" class="form-control w-100" id="nome" min="5" value="@Model.Nome" required />
+        </label>
+        <label class="col-12">
+            <p class="text-rosa font-weight-bold">Descrição:</p>
+            <textarea rows="2" class="form-control w-100" name="descricao" id="descricao" min="10" required>@Model.Descricao</textarea>
+        </label>
+        <label class="col-6">
+            <p class="text-rosa font-weight-bold">Preço:</p>
+            <input type="text" name="preco" class="form-control w-100" id="preco" min="1"  value="@Model.Preco" required />
+        </label>
+        <label class="col-6">
+            <p class="text-rosa font-weight-bold">Quantidade:</p>
+            <input type="number" name="quantidade" class="form-control w-100" id="quantidade" min="1"  value="@Model.Quantidade" required />
+        </label>
+        <label class="col-12">
+            <p class="text-rosa font-weight-bold">Imagen(s):</p>
+            <input id="arquivos" type="file" multiple onchange="enviarImagem(this)" />
+        </label>
+
+        <div id="imgPreview">
+            @if (Model.base64 != null)
+            {
+                for (int i = 0; i < Model.imagens.Count; i++)
+                {
+                    <div>
+                        <img src="data:image/png;base64, @Model.base64[i]" data="@Model.imagens[i].Caminho">
+                        <button class="btnExcluirImagem" type="button" onclick="deletarImagem('@Model.imagens[i].Caminho')">x</button>
+                    </div>
+                }
+            }
+
+        </div>
+
+        <div class="col-12 text-center mt-3 mb-4">
+            <button type="submit" class="btn btn-rosa mx-2">Salvar</button>
+            <button type="button" class="btn btn-danger mx-2" onclick="deletarPresente()">Deletar presente</button>
+            <button type="button" onclick="window.location='/presentes'" class="btn btn-secondary mx-2">Voltar</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    (
+        function alertaCadastro() {
+            let cadastrou = "@TempData["cadastrou"]";
+            console.log(cadastrou);
+            if (cadastrou && cadastrou != "False") {
+                alert("Presente cadastrado com sucesso!");
+            }
+        }
+
+    )();
+
+    let imgs = [];
+
+    function enviarImagem(ev) {
+
+        //if (nome.value.length < 2 || descricao.value.length < 5 || preco.value.length < 1 || quantidade.value.length < 1) {
+        //    alert("Algum dos campos está vazio ou muito pequeno!");
+        //    return false;
+        //}
+
+        var input = document.getElementById("arquivos");
+        var files = input.files;
+        var formData = new FormData();
+
+        for (var i = 0; i != files.length; i++) {
+            formData.append("files", files[i]);
+        }
+
+        $.ajax(
+            {
+                url: "/presentes/EnviarImagem?timestampPresente=@Model.Timestamp",
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    let container = document.querySelector("#imgPreview");
+                    data.forEach(e => {
+                        let div = document.createElement("div");
+                        let img = document.createElement("img");
+                        let btnExcluir = document.createElement("button");
+                        img.setAttribute("src", "data:image/png;base64, " + e.arquivo);
+                        img.setAttribute("data", e.timestamp);
+
+                        btnExcluir.append("x");
+                        btnExcluir.classList.add("btnExcluirImagem");
+                        btnExcluir.setAttribute("type", "button");
+                        btnExcluir.setAttribute("onclick", "deletarImagem('" + e.timestamp + "')");
+
+                        div.append(img);
+                        div.append(btnExcluir);
+                        container.append(div);
+                        imgs.push(div);
+                    });
+
+                }
+            }
+        );
+    }
+
+    function deletarImagem(ev) {
+        $.ajax(
+            {
+                url: "/presentes/DeletarImagem?caminho=" + ev,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    if (data) {
+                        $("img[data='" + ev + "']").parent().remove();
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+    }
+
+    function deletarPresente() {
+        Swal.fire({
+            title: 'Tem certeza que deseja deletar este presente?',
+            html: 'Presente: @Model.Nome',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax(
+                    {
+                        url: "/presentes/deletar/@Model.Id",
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        success: function (data) {
+                            if (data) {
+                                Swal.fire(
+                                    'Deletado!',
+                                    'Presente @Model.Nome deletado com sucesso',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location = '@Url.Action("Editar","Presentes")'
+                                    }
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Erro ao deletar :(',
+                                    'Tivemos um problema para deletar o presente selecionado, tente novamente em breve! ',
+                                    'error'
+                                )
+                            }
+
+                        }
+                    }
+                );
+
+            }
+        })
+    }
+</script>
