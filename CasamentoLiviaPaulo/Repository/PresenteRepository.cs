@@ -113,7 +113,7 @@ namespace CasamentoLiviaPaulo.Repository
         {
             int inicio = pagina * 20;
             int fim = inicio + 20;
-            string query = "SELECT * FROM presente WHERE Quantidade > 0 ORDER BY Preco LIMIT " + inicio + "," + fim;
+            string query = "SELECT * FROM presente ORDER BY Preco LIMIT " + inicio + "," + fim;
             string queryCount = "SELECT count(*) as Registros FROM presente";
             var conn = GetConnection();
 

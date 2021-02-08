@@ -6,6 +6,9 @@
 <p class="text-azul text-center font-weight-bold">
     Querido convidado seja bem-vindo a nossa lista de presentes. Pensamos em tudo com muito carinho para que você se sinta à vontade para nos presentear com o que sentir vontade.
 </p>
+<p class="text-azul text-center font-weight-bold">
+    Informamos que as compras realizadas em nosso site será depositada em nossa conta para a compra do presente, portanto, porfavor, nos presentei comprando por aqui.
+</p>
 
 <div class="container-categorias">
     <a href="#" class="text-decoration-none text-azul font-weight-bold">
@@ -31,7 +34,10 @@
 <div class="container-presentes row container mx-auto px-0 px-md-4">
     @foreach (Presente presente in Model)
     {
-        <div class="col-6 col-md-4 col-lg-3 px-0 px-md-4">
+        
+        string esgotado = presente.Quantidade > 0 ? "" : "esgotado";
+        
+        <div class="col-6 col-md-4 col-lg-3 px-0 px-md-4 @esgotado">
             <div class="presente">
                 <div class="imagens">
                     <span class="quantidade">@presente.Quantidade</span>
@@ -48,7 +54,14 @@
                     </div>
                 </div>
                 <span class="descricao">@presente.Nome</span>
-                <a href="/Presentes/detalhe/@presente.Id" class="btn-rounded btn-azul text-white text-decoration-none" style="z-index: 9999">Presentear</a>
+                @if (presente.Quantidade > 0)
+                {
+                    <a href="/Presentes/detalhe/@presente.Id" class="btn-rounded btn-azul text-white text-decoration-none" style="z-index: 9999">Presentear</a>
+                }
+                else
+                {
+
+                }
             </div>
         </div>
     }
