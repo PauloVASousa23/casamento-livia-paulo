@@ -26,8 +26,16 @@ namespace CasamentoLiviaPaulo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.Add(new ServiceDescriptor(typeof(PresenteRepository), new PresenteRepository(Configuration.GetConnectionString("DevConnection"))));
-            services.Add(new ServiceDescriptor(typeof(ImagensRepository), new ImagensRepository(Configuration.GetConnectionString("DevConnection"))));
+            services.Add(new ServiceDescriptor(typeof(PresenteRepository), new PresenteRepository(Configuration.GetConnectionString("ProdConnection"))));
+            services.Add(new ServiceDescriptor(typeof(ImagensRepository), new ImagensRepository(Configuration.GetConnectionString("ProdConnection"))));
+            services.Add(new ServiceDescriptor(typeof(PresentearRepository), new PresentearRepository(Configuration.GetConnectionString("ProdConnection"))));
+            services.Add(new ServiceDescriptor(typeof(MercadoPagoRepository), new MercadoPagoRepository(Configuration.GetConnectionString("ProdConnection"))));
+            services.Add(new ServiceDescriptor(typeof(AcessosRepository), new AcessosRepository(Configuration.GetConnectionString("ProdConnection"))));
+            //services.Add(new ServiceDescriptor(typeof(PresenteRepository), new PresenteRepository(Configuration.GetConnectionString("DevConnection"))));
+            //services.Add(new ServiceDescriptor(typeof(ImagensRepository), new ImagensRepository(Configuration.GetConnectionString("DevConnection"))));
+            //services.Add(new ServiceDescriptor(typeof(PresentearRepository), new PresentearRepository(Configuration.GetConnectionString("DevConnection"))));
+            //services.Add(new ServiceDescriptor(typeof(MercadoPagoRepository), new MercadoPagoRepository(Configuration.GetConnectionString("DevConnection"))));
+            //services.Add(new ServiceDescriptor(typeof(AcessosRepository), new AcessosRepository(Configuration.GetConnectionString("DevConnection"))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

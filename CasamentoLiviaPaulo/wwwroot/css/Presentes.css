@@ -176,7 +176,13 @@
     overflow: hidden;
 }
 
-@media (max-width: 576px){
+.mercadopago-button {
+    visibility: hidden;
+    width: 0px;
+    padding: 0px;
+}
+
+@media (max-width: 576px) {
     .presente {
         width: 170px;
         height: 220px;

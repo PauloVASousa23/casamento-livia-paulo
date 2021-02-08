@@ -1,4 +1,5 @@
 ﻿using CasamentoLiviaPaulo.Models;
+using CasamentoLiviaPaulo.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,9 +21,9 @@ namespace CasamentoLiviaPaulo.Controllers
 
         public IActionResult Index()
         {
-
-            //TesteContext teste = HttpContext.RequestServices.GetService(typeof(TesteContext)) as TesteContext;
-            //ViewData["teste"] = teste.GetAllAlbums();
+            AcessosRepository model = HttpContext.RequestServices.GetService(typeof(AcessosRepository)) as AcessosRepository;
+            DateTime data = DateTime.Now;
+            model.CadastrarAcesso(data);
             return View();
         }
 

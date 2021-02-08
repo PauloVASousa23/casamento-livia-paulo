@@ -113,7 +113,7 @@ namespace CasamentoLiviaPaulo.Repository
         {
             int inicio = pagina * 20;
             int fim = inicio + 20;
-            string query = "SELECT * FROM presente ORDER BY Preco LIMIT " + inicio + "," + fim;
+            string query = "SELECT * FROM presente WHERE Quantidade > 0 ORDER BY Preco LIMIT " + inicio + "," + fim;
             string queryCount = "SELECT count(*) as Registros FROM presente";
             var conn = GetConnection();
 
@@ -196,6 +196,31 @@ namespace CasamentoLiviaPaulo.Repository
                     cmd.Parameters.AddWithValue("@Preco", p.Preco);
                     cmd.Parameters.AddWithValue("@Quantidade", p.Quantidade);
                     cmd.Parameters.AddWithValue("@Timestamp", p.Timestamp);
+
+                    reader = cmd.ExecuteNonQuery();
+
+                }
+
+                cnx.Close();
+
+                return reader > 0;
+            }
+        }
+
+        public bool AtualizarQuantidadePresente(int id, int quantidade)
+        {
+            string query = "UPDATE presente SET Quantidade = @Quantidade WHERE Id = @Id";
+
+            using (MySqlConnection cnx = GetConnection())
+            {
+                int reader;
+
+                cnx.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand(query, cnx))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@Quantidade", quantidade);
 
                     reader = cmd.ExecuteNonQuery();
 

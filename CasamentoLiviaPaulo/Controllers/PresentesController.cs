@@ -155,6 +155,22 @@ namespace CasamentoLiviaPaulo.Controllers
             return model.CadastrarPresente(p);
         }
 
+        [HttpGet]
+        public bool Presentear(string nome, int id)
+        {
+
+            Presenteou p = new Presenteou();
+            p.Pessoa = nome;
+            p.Data = DateTime.Now;
+            p.Mensagem = null;
+            p.Presente_Id = id;
+
+            PresentearRepository model = HttpContext.RequestServices.GetService(typeof(PresentearRepository)) as PresentearRepository;
+
+            return model.CadastrarPresenteou(p);
+        }
+
+
         [Route("Presentes/detalhe/{id}")]
         public IActionResult Detalhe(int id)
         {
@@ -191,17 +207,61 @@ namespace CasamentoLiviaPaulo.Controllers
             preference.BackUrls = new MercadoPago.DataStructures.Preference.BackUrls()
             {
                 Success = "https://liviaepaulo.com/Presentes/sucesso",
-                Pending = "",
-                Failure = ""
+                Pending = "https://liviaepaulo.com/Presentes/sucesso",
+                Failure = "https://liviaepaulo.com/Presentes/sucesso"
+                //Success = "https://localhost:5001/Presentes/sucesso",
+                //Pending = "https://localhost:5001/Presentes/sucesso",
+                //Failure = "https://localhost:5001/Presentes/sucesso"
             };
+
+            preference.ExternalReference = p.Id + "/" + p.Quantidade;
 
             preference.Save();
 
             ViewData["preferences"] = preference.Id;
             return View(p);
         }
-        public IActionResult Sucesso()
+
+        public string pessoaNome;
+        public int presenteId;
+        public int presenteQuantidade;
+        public IActionResult Sucesso(string collection_id, string collection_status, string payment_id, string status, string external_reference, string payment_type, string merchant_order_id, string preference_id, string site_id, string processing_mode, string merchant_account_id)
         {
+            try
+            {
+                MercadoPagoRepository model = HttpContext.RequestServices.GetService(typeof(MercadoPagoRepository)) as MercadoPagoRepository;
+                presenteId = Int32.Parse(external_reference.Split('/')[0].ToString());
+                presenteQuantidade = Int32.Parse(external_reference.Split('/')[1].ToString());
+                MercadoPagoOrdem m = new MercadoPagoOrdem()
+                {
+                    pessoa = pessoaNome,
+                    presente = presenteId,
+                    collection_id = collection_id,
+                    collection_status = collection_status,
+                    payment_id = payment_id,
+                    status = status,
+                    external_reference = external_reference,
+                    payment_type = payment_type,
+                    merchant_order_id = merchant_order_id,
+                    preference_id = preference_id,
+                    site_id = site_id,
+                    processing_mode = processing_mode,
+                    merchant_account_id = merchant_account_id
+                };
+
+                model.CadastrarOrdem(m);
+
+                if (status == "approved")
+                {
+                    PresenteRepository modelPresente = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
+                    modelPresente.AtualizarQuantidadePresente(presenteId, (presenteQuantidade - 1));
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
             return View();
         }
         public List<string> GetImagens()
