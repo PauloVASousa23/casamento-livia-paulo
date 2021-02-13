@@ -281,18 +281,24 @@ img.seta-passar-foto {
     line-height: 30px;
 }
 
+.container-lua-de-mel {
+    background-color: #B64667;
+}
+
 @media (max-width: 768px){
     .img-topo-titulo {
         width: 250px;
         left: 0px;
         position: absolute;
         top: 0px;
+        z-index: -1;
     }
 
     .img-topo-bg-1 {
         position: absolute;
         top: 0px;
         height: 120vh;
+        z-index: -2;
     }
 
     .img-topo-bg-2 {
@@ -300,7 +306,7 @@ img.seta-passar-foto {
         left: 0px;
         bottom: -0px;
         width: 300px;
-        z-index: -1;
+        z-index: -2;
     }
 
     .topo-conteudo {
@@ -334,7 +340,7 @@ img.seta-passar-foto {
         top: 0px;
         margin-top: 0px !important;
         background-color: #ffd0de;
-        z-index: 99999;
+        z-index: 9999999;
         flex-direction: column;
         justify-content: space-evenly;
     }

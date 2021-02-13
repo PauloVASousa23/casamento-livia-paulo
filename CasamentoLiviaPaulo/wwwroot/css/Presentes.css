@@ -20,7 +20,7 @@
 
 .presente {
     width: 200px;
-    height: 220px;
+    height: 230px;
     background-color: #FBE3E5;
     border-radius: 15px;
     box-shadow: 4px 4px 7px -4px rgba(0,0,0,0.6);
@@ -182,9 +182,13 @@
     padding: 0px;
 }
 
+.esgotado > .presente {
+    background-color: #20214882;
+}
+
 @media (max-width: 576px) {
     .presente {
-        width: 170px;
+        width: 160px;
         height: 220px;
         background-color: #FBE3E5;
         border-radius: 15px;
@@ -196,7 +200,7 @@
     }
 
         .presente > .imagens {
-            width: 150px;
+            width: 140px;
             height: 105px;
             background-color: #fff;
             border: 1px dashed #202148;
@@ -220,6 +224,11 @@
 
     .imagens > .owl-carousel > .owl-stage-outer > .owl-stage > .owl-item {
         width: 150px !important;
+    }
+
+    .container-categorias > a > img {
+        height: 50px;
+        display: block;
     }
 
 }

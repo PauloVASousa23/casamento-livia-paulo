@@ -40,7 +40,7 @@
                 <a href="/">Inicio</a>
                 <a href="/#sobre">Sobre</a>
                 <a href="/#fotos">Fotos</a>
-                @Html.ActionLink("Presentes", "Index", "Home")
+                @Html.ActionLink("Presentes", "Index", "Presentes")
                 <a href="/#contato">Contato</a>
             </div>
         </nav>
@@ -62,6 +62,10 @@
             } else {
                 $(".menu-botoes").css("display", "none");
             }
+        });
+
+        $(".menu-botoes>a").click(function () {
+            $(".btn-fechar-menu").trigger("click");
         });
 
         $(".btn-fechar-menu").click(function () {

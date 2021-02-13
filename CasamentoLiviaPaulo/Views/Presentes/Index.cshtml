@@ -3,31 +3,40 @@
 <link rel="stylesheet" href="~/css/Presentes.css" />
 
 <h1 class="text-blossom text-rosa text-center font-78 mt-5 " style="line-height:1;">Presentes</h1>
-<p class="text-azul text-center font-weight-bold">
-    Querido convidado seja bem-vindo a nossa lista de presentes. Pensamos em tudo com muito carinho para que você se sinta à vontade para nos presentear com o que sentir vontade.
+<p class="text-azul text-center font-weight-bold px-4">
+    Querido convidado, seja bem-vindo a nossa lista de presentes! Sinta-se a vontade para presentear com o que seu coração desejar.
 </p>
-<p class="text-azul text-center font-weight-bold">
-    Informamos que as compras realizadas em nosso site será depositada em nossa conta para a compra do presente, portanto, porfavor, nos presentei comprando por aqui.
+<p class="text-azul text-center font-weight-bold px-4">
+    Atenção: Informamos que o dinheiro da sua compra será destinado a conta dos noivos para a compra do presente.
 </p>
 
 <div class="container-categorias">
-    <a href="#" class="text-decoration-none text-azul font-weight-bold">
-        <img src="~/img/icone-eletrodomesticos.png" />
+    <a href="/presentes?pagina=0&categoria=eletrodomesticos" class="text-decoration-none text-azul font-weight-bold">
+        <img src="~/img/icone-eletrodomesticos.png" class="mx-auto"/>
         <span>Eletrodomesticos</span>
     </a>
-    <a href="#" class="text-decoration-none text-azul font-weight-bold">
-        <img src="~/img/icone-panelas.png" />
+    <a href="/presentes?pagina=0&categoria=panelas" class="text-decoration-none text-azul font-weight-bold">
+        <img src="~/img/icone-panelas.png" class="mx-auto"/>
         <span>Panelas</span>
     </a>
-    <a href="#" class="text-decoration-none text-azul font-weight-bold">
-        <img src="~/img/icone-utensilios.png" />
+    <a href="/presentes?pagina=0&categoria=utensilios" class="text-decoration-none text-azul font-weight-bold">
+        <img src="~/img/icone-utensilios.png" class="mx-auto"/>
         <span>Utensilios</span>
     </a>
-    <a href="#" class="text-decoration-none text-azul font-weight-bold">
-        <img src="~/img/icone-lazer.png" />
+    <a href="/presentes?pagina=0&categoria=lazer" class="text-decoration-none text-azul font-weight-bold">
+        <img src="~/img/icone-lazer.png" class="mx-auto"/>
         <span>Lazer</span>
     </a>
 </div>
+    @if(ViewData["categoria"] != null){
+        @if (ViewData["categoria"].ToString() != "")
+        {
+            string a = ViewData["categoria"].ToString();
+            <div class="col-12 text-center">
+                <a href="/presentes?pagina=0" class="btn btn-rosa">Todos os presentes</a>
+            </div>
+        }
+    }
 
 <hr class="hr-azul" />
 
@@ -60,7 +69,7 @@
                 }
                 else
                 {
-
+                    <a href="javascript:void(0)" class="btn-rounded btn-azul text-white text-decoration-none disabled" style="z-index: 9999">Esgotado!</a>
                 }
             </div>
         </div>
@@ -68,35 +77,52 @@
 
 </div>
 <div class="paginacao">
-    @if (Int32.Parse(ViewData["PaginaAtual"].ToString()) > 0)
+    @if (Model.Count() > 0)
     {
-        <a href="/presentes?pagina=@(Int32.Parse(ViewData["PaginaAtual"].ToString())-1)">&lt;</a>
-    }
-    else
-    {
-        <a href="#">&lt;</a>
-    }
-
-    @for (int i = 0; i <= Model[0].Registros; i++)
-    {
-        @if (Int32.Parse(ViewData["PaginaAtual"].ToString())+1 == i+1)
+        @if (Int32.Parse(ViewData["PaginaAtual"].ToString()) > 0)
         {
-            <a href="/presentes?pagina=@(i)" class="paginacao-active">@(i + 1)</a>
+            <a href="/presentes?pagina=@(Int32.Parse(ViewData["PaginaAtual"].ToString())-1)&categoria=@(ViewData["categoria"])">&lt;</a>
         }
         else
         {
-            <a href="/presentes?pagina=@(i)">@(i + 1)</a>
+            <a href="#">&lt;</a>
         }
-    }
 
-    @if (Int32.Parse(ViewData["PaginaAtual"].ToString()) < Model.Count / 20)
-    {
-        <a href="/presentes?pagina=@(Int32.Parse(ViewData["PaginaAtual"].ToString())+1)">></a>
+        @for (int i = 0; i <= Model[0].Registros; i++)
+        {
+            @if (Int32.Parse(ViewData["PaginaAtual"].ToString()) + 1 == i + 1)
+            {
+                <a href="/presentes?pagina=@(i)&categoria=@(ViewData["categoria"])" class="paginacao-active">@(i + 1)</a>
+            }
+            else
+            {
+                <a href="/presentes?pagina=@(i)&categoria=@(ViewData["categoria"])">@(i + 1)</a>
+            }
+        }
+
+        @if (Int32.Parse(ViewData["PaginaAtual"].ToString()) < Model.Count / 20)
+        {
+            <a href="/presentes?pagina=@(Int32.Parse(ViewData["PaginaAtual"].ToString())+1)&categoria=@(ViewData["categoria"])">></a>
+        }
+        else
+        {
+            <a href="#">></a>
+        }
+        
     }
-    else
-    {
-        <a href="#">></a>
-    }
+</div>
+
+<div class="container-lua-de-mel pt-1 pb-4">
+    <h1 class="text-blossom text-azul text-center font-78 mt-5 " style="line-height:1;">Lua de mel</h1>
+    <p class="text-azul text-center font-weight-bold px-4">
+        Querido convidado, gostaria de ajudar com a nossa vaquinha para a lua de mel? Insira ao lado valor que o seu coração desejar!
+    </p>
+    <form action="/Presentes/luaDeMel">
+        <div class="d-flex justify-content-center align-items-center">
+            <b>Valor:</b> <label class="ml-1 mr-2 mb-0"><input class="form-control" type="number" name="valor" style="width:100px" min="1" required/></label>
+            <button type="submit" class="btn btn-azul text-white">Presentear</button>
+        </div>
+    </form>
 </div>
 
 <script type="text/javascript">

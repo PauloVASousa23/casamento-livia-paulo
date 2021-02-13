@@ -109,12 +109,17 @@ namespace CasamentoLiviaPaulo.Repository
             return listaPresentes;
         }
 
-        public List<Presente> GetPresentes(int pagina)
+        public List<Presente> GetPresentes(int pagina, string categoria)
         {
+            string like = "";
+            if (categoria != null)
+            {
+                like = "WHERE Descricao LIKE '%" + categoria + "%'";
+            }
             int inicio = pagina * 20;
             int fim = inicio + 20;
-            string query = "SELECT * FROM presente ORDER BY Preco LIMIT " + inicio + "," + fim;
-            string queryCount = "SELECT count(*) as Registros FROM presente";
+            string query = "SELECT * FROM presente " + like + " ORDER BY Preco LIMIT " + inicio + "," + fim;
+            string queryCount = "SELECT count(*) as Registros FROM presente " + like;
             var conn = GetConnection();
 
             List<Presente> listaPresentes = new List<Presente>();

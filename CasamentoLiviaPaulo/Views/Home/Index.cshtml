@@ -85,7 +85,7 @@
         </div>
     </div>
 </section>
-<section class="presentes">
+<section class="presentes pb-4">
     <hr class="hr-rosa" />
     <h1 class="text-center text-rosa mb-5" style="font-size: 60px;">
         Presentes
@@ -104,11 +104,22 @@
             <p>
                 Essa lista só existe por que você está aqui. Muito obrigada por nos ajudar a construir esse dia.
             </p>
-            <button class="btn-rounded btn-rosa mt-2">ACESSAR</button>
-            <p class="text-center text-white font-weight-bold">Disponivel em breve (05/02/2021)</p>
+            <a href="@Url.Action("Index", "Presentes")" class="btn-rounded btn-rosa mt-2 mb-2 text-white text-decoration-none">ACESSAR</a>
         </div>
     </div>
 </section>
+<div class="container-lua-de-mel pt-4 pb-4">
+    <h1 class="text-blossom text-azul text-center font-78" style="line-height:1;">Lua de mel</h1>
+    <p class="text-azul text-center font-weight-bold px-4">
+        Querido convidado, gostaria de ajudar com a nossa vaquinha para a lua de mel? Insira ao lado valor que o seu coração desejar!
+    </p>
+    <form action="/Presentes/luaDeMel">
+        <div class="d-flex justify-content-center align-items-center">
+            <b>Valor:</b> <label class="ml-1 mr-2 mb-0"><input class="form-control" type="number" name="valor" style="width:100px" min="1" required /></label>
+            <button type="submit" class="btn btn-azul text-white">Presentear</button>
+        </div>
+    </form>
+</div>
 
 <script>
     $(document).ready(function () {

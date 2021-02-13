@@ -22,9 +22,15 @@ namespace CasamentoLiviaPaulo.Controllers
         {
             WebClient ftpClient = new WebClient();
             ftpClient.Credentials = new NetworkCredential("liviaepaulo", "P@ulo2018");
-
-            byte[] imageByte = ftpClient.DownloadData("ftp://ftp.liviaepaulo.com/imagens/presente/" + ftpFilePath);
-            return imageByte;
+            try
+            {
+                byte[] imageByte = ftpClient.DownloadData("ftp://ftp.liviaepaulo.com/imagens/presente/" + ftpFilePath);
+                return imageByte;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public static Bitmap ByteToImage(byte[] blob)
@@ -37,27 +43,35 @@ namespace CasamentoLiviaPaulo.Controllers
             return bm;
         }
 
-        public IActionResult Index(int pagina = 0)
+        public IActionResult Index(int pagina = 0, string categoria = "")
         {
             PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
             ImagensRepository modelImagens = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;
-            List<Presente> presentes = model.GetPresentes(pagina);
-            foreach (Presente p in presentes)
+            List<Presente> presentes = model.GetPresentes(pagina, categoria);
+            try
             {
-                p.imagens = modelImagens.GetImagens(p.Timestamp);
-                if (p.imagens.Count > 0)
+                foreach (Presente p in presentes)
                 {
-                    p.base64 = new List<string>();
+                    p.imagens = modelImagens.GetImagens(p.Timestamp);
+                    if (p.imagens.Count > 0)
+                    {
+                        p.base64 = new List<string>();
+                    }
+
+                    foreach (Imagens i in p.imagens)
+                    {
+                        var bytes = GetImgByte(i.Caminho);
+                        p.base64.Add(Convert.ToBase64String(bytes));
+                    }
                 }
 
-                foreach(Imagens i in p.imagens)
-                {
-                    var bytes = GetImgByte(i.Caminho);
-                    p.base64.Add(Convert.ToBase64String(bytes));
-                }
+                ViewData["PaginaAtual"] = pagina;
+                ViewData["categoria"] = categoria;
             }
-
-            ViewData["PaginaAtual"] = pagina;
+            catch (Exception e)
+            {
+                return RedirectToAction("Index","Home");
+            }
 
             return View(presentes);
         }
@@ -65,7 +79,7 @@ namespace CasamentoLiviaPaulo.Controllers
         {
             PresenteRepository model = HttpContext.RequestServices.GetService(typeof(PresenteRepository)) as PresenteRepository;
             ImagensRepository modelImagens = HttpContext.RequestServices.GetService(typeof(ImagensRepository)) as ImagensRepository;
-            List<Presente> presentes = model.GetPresentes(pagina);
+            List<Presente> presentes = model.GetPresentes(pagina, null);
             foreach (Presente p in presentes)
             {
                 p.imagens = modelImagens.GetImagens(p.Timestamp);
@@ -220,6 +234,41 @@ namespace CasamentoLiviaPaulo.Controllers
 
             ViewData["preferences"] = preference.Id;
             return View(p);
+        }
+
+        public IActionResult LuaDeMel(int valor)
+        {
+            Preference preference = new Preference();
+
+            // Cria um item na preferência
+            preference.Items.Add(
+              new MercadoPago.DataStructures.Preference.Item()
+              {
+                  Id = "lua de mel",
+                  Title = "Lua de mel",
+                  Quantity = 1,
+                  CurrencyId = MercadoPago.Common.CurrencyId.BRL,
+                  UnitPrice = (decimal)valor
+              }
+            );
+
+            preference.BackUrls = new MercadoPago.DataStructures.Preference.BackUrls()
+            {
+                Success = "https://liviaepaulo.com/Presentes/sucesso",
+                Pending = "https://liviaepaulo.com/Presentes/sucesso",
+                Failure = "https://liviaepaulo.com/Presentes/sucesso"
+                //Success = "https://localhost:5001/Presentes/sucesso",
+                //Pending = "https://localhost:5001/Presentes/sucesso",
+                //Failure = "https://localhost:5001/Presentes/sucesso"
+            };
+
+            preference.ExternalReference = "Lua de mel";
+
+            preference.Save();
+
+            ViewData["preferences"] = preference.Id;
+            ViewData["valor"] = valor;
+            return View();
         }
 
         public string pessoaNome;
