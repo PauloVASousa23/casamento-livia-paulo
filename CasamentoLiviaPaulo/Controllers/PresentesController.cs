@@ -212,7 +212,7 @@ namespace CasamentoLiviaPaulo.Controllers
               {
                   Id = p.Id.ToString(),
                   Title = p.Nome,
-                  Quantity = p.Quantidade,
+                  Quantity = 1,
                   CurrencyId = MercadoPago.Common.CurrencyId.BRL,
                   UnitPrice = (decimal)p.Preco
               }
